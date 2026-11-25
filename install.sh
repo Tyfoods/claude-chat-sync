@@ -12,7 +12,7 @@ cat > "$plist" <<PLIST
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
   <key>Label</key><string>local.claude-chat-sync</string>
-  <key>ProgramArguments</key><array><string>$python</string><string>-I</string><string>$here/sync_claude_chats.py</string></array>
+  <key>ProgramArguments</key><array><string>$python</string><string>-I</string><string>$here/sync_claude_chats.py</string><string>--apply</string></array>
   <key>StartInterval</key><integer>60</integer>
   <key>RunAtLoad</key><true/>
   <key>ProcessType</key><string>Background</string>
