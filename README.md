@@ -1,6 +1,6 @@
 # claude-chat-sync
 
-Makes every Claude Desktop **Code** chat show up on every Claude account you sign in to on this machine. When a usage limit forces you to switch accounts, your chats come with you.
+Keeps your Claude Desktop **Code** chats visible on every Claude account you sign in to on the same Mac. Not affiliated with or endorsed by Anthropic. It reads and writes Claude Desktop's own local chat-list files, which are undocumented, so an app update can break it. Back up `~/Library/Application Support/Claude*/claude-code-sessions` first, and follow the terms of your Claude plan.
 
 It copies only the chat *index* files (titles, model, activity, where the chat lives), not transcripts. Claude Desktop itself keeps the transcripts, sign-ins, permissions and bridges.
 
