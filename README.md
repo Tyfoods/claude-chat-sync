@@ -23,3 +23,6 @@ The script is macOS-only. To port it, keep the same rules (newest copy wins, nev
 - `SUPPORT` with Claude's data folder (normally `%APPDATA%\Claude*`), and the log path with Claude's Windows log folder;
 - `ps` / `osascript` / `open` with `tasklist`, a notification and a normal close/relaunch of Claude;
 - `fcntl.flock` with `msvcrt.locking`, and launchd with a Task Scheduler task every minute.
+
+## License
+MIT. See LICENSE.
