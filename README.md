@@ -19,10 +19,24 @@ Needs Python 3 and Claude Desktop in /Applications. From this folder:
 It's safe to run again: it updates the launch agent and keeps the existing state. Check it with `launchctl list | grep claude-chat` and `sync-errors.log`.
 
 ## Windows
-The script is macOS-only. To port it, keep the same rules (newest copy wins, never touch the open account's folder, never resurrect deleted chats) and replace:
-- `SUPPORT` with Claude's data folder (normally `%APPDATA%\Claude*`), and the log path with Claude's Windows log folder;
-- `ps` / `osascript` / `open` with `tasklist`, a notification and a normal close/relaunch of Claude;
-- `fcntl.flock` with `msvcrt.locking`, and launchd with a Task Scheduler task every minute.
+`sync_claude_chats_windows.py` is a separate, more cautious version. It needs Python 3 and Claude Desktop. Differences from the Mac script:
+- It never writes to the open account's folders. Chats reach that account once it is no longer open (another account is open, or Claude has been fully quit for a minute).
+- It never closes or reopens Claude.
+- If it can't establish which account is open, it writes nothing and says so in `sync.log`.
+- It is a dry run unless `--apply` is given. `--root` points it at a copy of Claude's data folder.
+
+Back up `claude-code-sessions` first (Store install: `%LOCALAPPDATA%\Packages\Claude_*\LocalCache\Roaming\Claude`). Put the script in a folder outside AppData, such as `%USERPROFILE%\claude-chat-sync`; it keeps `state.json` and `sync.log` beside itself. Do a dry run, then register it in PowerShell:
+
+    $dir = "$env:USERPROFILE\claude-chat-sync"
+    $pyw = (Get-Command pythonw).Source
+    $action = New-ScheduledTaskAction -Execute $pyw -Argument "-I -B `"$dir\sync_claude_chats_windows.py`" --apply" -WorkingDirectory $dir
+    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 1)
+    $settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Minutes 5)
+    Register-ScheduledTask -TaskName claude-chat-sync -Action $action -Trigger $trigger -Settings $settings
+
+Remove it with `Unregister-ScheduledTask -TaskName claude-chat-sync`.
+
+Tested on Windows 10 with the Store (MSIX) install and Python 3.11.
 
 ## License
 MIT. See LICENSE.
