@@ -6,7 +6,7 @@ It copies only the chat *index* files (titles, model, activity, where the chat l
 
 ## How it works
 - Claude Desktop keeps one chat list per account and organization: `~/Library/Application Support/Claude*/claude-code-sessions/<account>/<org>/local_*.json`.
-- The script runs every 60 seconds. For each chat it finds the newest copy across those folders and writes it into the others. It never overwrites the folder of the account that's currently open, and never brings back a chat you deleted from one account.
+- The script runs every 60 seconds. For each chat it finds the newest copy across those folders and writes it into the others. For the account that's currently open, it never overwrites a chat entry already there, but it does add chats that are missing. It never brings back a chat you deleted from that account's list.
 - It learns each new sign-in by reading `[LocalSessionManager] Initialization succeeded` lines in `~/Library/Logs/Claude/main.log`.
 - Claude Desktop reads a sign-in's chat list once, when that sign-in opens. So the first time chats arrive for a sign-in that's already open, the script asks Claude to quit normally and reopens it once. It only does that when most of that list arrived in the same pass.
 - State and errors: `~/Library/Application Support/Claude Chat Index/` (`state.json`, `sync-errors.log`).
