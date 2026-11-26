@@ -13,7 +13,7 @@ One script, `sync_claude_chats.py`, does the same thing on both systems. Only wh
   - macOS: a normal quit, as with Cmd-Q, so Claude still asks before stopping running work.
   - Windows: the request Windows sends when an installer needs an app closed. Claude answers it with its own orderly quit.
 - It's a dry run unless `--apply` is given. `--root` points it at a copy of Claude's data folder, `--no-reopen` leaves a due reopen to a later pass.
-- State and log (`state.json`, `sync.log`): `~/Library/Application Support/Claude Chat Index/` on macOS, `%LOCALAPPDATA%\Claude Chat Index\` on Windows.
+- State and log (`state.json`, `sync.log`): `~/Library/Application Support/Claude Chat Index/` on macOS, `%USERPROFILE%\.claude-chat-index\` on Windows. Not under AppData there: Windows redirects AppData writes made from inside the Store app, such as a Claude Code session running this script, into the app's private storage, where the scheduled task never sees them.
 
 ## Install (macOS)
 Needs Python 3 and Claude Desktop in /Applications. Back up `~/Library/Application Support/Claude*/claude-code-sessions`. From this folder:

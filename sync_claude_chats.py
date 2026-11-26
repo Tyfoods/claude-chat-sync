@@ -321,7 +321,9 @@ class Windows:
 
     def __init__(self):
         self.local, self.roaming = Path(os.environ["LOCALAPPDATA"]), Path(os.environ["APPDATA"])
-        self.state_dir = self.local / "Claude Chat Index"
+        # Not under AppData: Windows redirects AppData writes made from inside the Store app (a Claude Code session
+        # running this script) into the app's private storage, which the scheduled task never sees.
+        self.state_dir = Path.home() / ".claude-chat-index"
 
     def profiles(self):
         root = self.root_override or self.find_root()
